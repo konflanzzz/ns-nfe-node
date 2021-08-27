@@ -1,6 +1,5 @@
 
 const axios = require('axios')
-const nfe = require('./LayoutNFe.json')
 const configParceiro = require('../configParceiro')
 
 const url = "https://nfe.ns.eti.br/nfe/issue"
@@ -9,12 +8,6 @@ const header = {
     "Content-Type": "application/json",
     "X-AUTH-TOKEN": configParceiro.token
 }
-
-// class body {
-//     constructor(NFe) {
-//         this.NFe = NFe;
-//     }
-// }
 
 class response {
     constructor({ status, motivo, nsNRec, erros }) {

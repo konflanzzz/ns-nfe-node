@@ -1,11 +1,10 @@
 const statusProcessamento = require('./statusProcessamento')
 const download = require('./download')
 const emitir = require('./emitirNFe')
-const NFeJSON = require('./LayoutNFe.json')
 const configParceiro = require('../configParceiro')
 
 class responseSincrono {
-    constructor(statusEnvio, statusConsulta, statusDownload, cStat, motivo, nsNRec, chNFe, nProt, xml, json, pdf, erros){
+    constructor(statusEnvio, statusConsulta, statusDownload, cStat, motivo, nsNRec, chNFe, nProt, xml, json, pdf, erros) {
         this.statusEnvio = statusEnvio;
         this.statusConsulta = statusConsulta;
         this.statusDownload = statusDownload;
@@ -21,16 +20,16 @@ class responseSincrono {
     }
 }
 
-async function emitirNFeSincrono(conteudo, cnpj, tpAmb, tpDown) {
+async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
     let respostaSincrona = new responseSincrono();
-    
+
     const respostaEmissao = new emitir.response(
         emitir.sendRequest(emitir.url, conteudo)
             .then(getResponse => {
 
                 const statusProcessamentoBody = new statusProcessamento.body(
-                    cnpj,
+                    configParceiro.CNPJ,
                     getResponse.nsNRec,
                     tpAmb
                 )
@@ -43,11 +42,11 @@ async function emitirNFeSincrono(conteudo, cnpj, tpAmb, tpDown) {
 
                 console.log(getResponse)
 
-                var respostaStatusProcessamento = new statusProcessamento.response(
+                const respostaStatusProcessamento = new statusProcessamento.response(
                     statusProcessamento.sendRequest(statusProcessamento.url, statusProcessamentoBody)
                         .then(getResponse => {
-                            
-                            if (getResponse.cStat == 100 ) {
+
+                            if (getResponse.cStat == 100) {
 
                                 console.log(getResponse)
 
@@ -66,10 +65,10 @@ async function emitirNFeSincrono(conteudo, cnpj, tpAmb, tpDown) {
                                     tpAmb
                                 )
 
-                                var respostaDownloadNFe = new download.response(
+                                const respostaDownloadNFe = new download.response(
                                     download.sendRequest(download.url, downloadNFeBody)
                                         .then(getResponse => {
-                                               
+
                                             respostaSincrona = {
                                                 statusDownload: getResponse.status,
                                                 json: getResponse.json,
@@ -78,6 +77,8 @@ async function emitirNFeSincrono(conteudo, cnpj, tpAmb, tpDown) {
                                             }
 
                                             console.log(getResponse)
+
+                                            return respostaSincrona
                                         }
                                     )
                                 )
@@ -85,16 +86,18 @@ async function emitirNFeSincrono(conteudo, cnpj, tpAmb, tpDown) {
 
                             else {
                                 console.log(getResponse)
+                                return getResponse
                             }
                         }
                     )
                 );
+
+                return getResponse
             }
         )
     )
-
-    return respostaSincrona
+    return respostaEmissao
 }
 
 
-module.exports = {responseSincrono, emitirNFeSincrono}
+module.exports = { responseSincrono, emitirNFeSincrono }

@@ -1,11 +1,9 @@
-const NFeAPI = require('./nfe/emitirNFeSincrono')
-const NFeJSON = require('./nfe/LayoutNFe.json')
-const configParceiro = require('./configParceiro')
+const NFeAPI = require('./nfe/emitirSincrono')
+const NFeJSON = require('./nfe/LayoutNFe')
 
 var conteudoJSON = NFeJSON
 
-var teste = NFeAPI.emitirNFeSincrono(conteudoJSON, configParceiro.CNPJ, "2", "X")
-    .then(async respostaEmissao => {
-        retorno = respostaEmissao
-    }
-)
+NFeAPI.emitirNFeSincrono(conteudoJSON, "2", "X")
+.then(async respostaEmissao => {
+    setTimeout(function () { console.log(respostaEmissao)}, 2000)
+})
