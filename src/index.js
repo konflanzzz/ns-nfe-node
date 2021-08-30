@@ -5,5 +5,5 @@ var conteudoJSON = NFeJSON
 
 NFeAPI.emitirNFeSincrono(conteudoJSON, "2", "X")
 .then(async respostaEmissao => {
-    setTimeout(function () { console.log(respostaEmissao)}, 2000)
+    setTimeout(function () { console.log(respostaEmissao)}, 3000)
 })

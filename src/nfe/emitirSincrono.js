@@ -24,79 +24,81 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
     let respostaSincrona = new responseSincrono();
 
-    const respostaEmissao = new emitir.response(
-        emitir.sendRequest(emitir.url, conteudo)
-            .then(getResponse => {
+    emitir.sendRequest(emitir.url, conteudo)
+        .then(getResponseEmissao => {
 
-                const statusProcessamentoBody = new statusProcessamento.body(
-                    configParceiro.CNPJ,
-                    getResponse.nsNRec,
-                    tpAmb
-                )
+            const statusProcessamentoBody = new statusProcessamento.body(
+                configParceiro.CNPJ,
+                getResponseEmissao.nsNRec,
+                tpAmb
+            )
 
-                respostaSincrona = {
-                    statusEnvio: getResponse.status,
-                    nsNRec: getResponse.nsNRec,
-                    erros: getResponse.erros
-                }
+            respostaSincrona = {
+                statusEnvio: getResponseEmissao.status,
+                nsNRec: getResponseEmissao.nsNRec,
+                erros: getResponseEmissao.erros
+            }
 
-                console.log(getResponse)
+            console.log(respostaSincrona)
 
-                const respostaStatusProcessamento = new statusProcessamento.response(
-                    statusProcessamento.sendRequest(statusProcessamento.url, statusProcessamentoBody)
-                        .then(getResponse => {
+            statusProcessamento.sendRequest(statusProcessamento.url, statusProcessamentoBody)
+                .then(getResponseStatusProcessamento => {
 
-                            if (getResponse.cStat == 100) {
+                    if (getResponseStatusProcessamento.cStat == 100) {
 
-                                console.log(getResponse)
+                        respostaSincrona = {
+                            statusConsulta: getResponseStatusProcessamento.status,
+                            cStat: getResponseStatusProcessamento.cStat,
+                            chNFe: getResponseStatusProcessamento.chNFe,
+                            nProt: getResponseStatusProcessamento.nProt,
+                            xml: getResponseStatusProcessamento.xml,
+                            erros: getResponseStatusProcessamento.erro
+                        }
+
+                        console.log(respostaSincrona)
+
+                        const downloadNFeBody = new download.body(
+                            getResponseStatusProcessamento.chNFe,
+                            tpDown,
+                            tpAmb
+                        )
+
+                        download.sendRequest(download.url, downloadNFeBody)
+                            .then(getResponseDownload => {
 
                                 respostaSincrona = {
-                                    statusConsulta: getResponse.status,
-                                    cStat: getResponse.cStat,
-                                    chNFe: getResponse.chNFe,
-                                    nProt: getResponse.nProt,
-                                    xml: getResponse.xml,
-                                    erros: getResponse.erro
+                                    statusDownload: getResponseDownload.status,
+                                    json: getResponseDownload.json,
+                                    pdf: getResponseDownload.pdf,
+                                    erros: getResponseDownload.erros
                                 }
 
-                                const downloadNFeBody = new download.body(
-                                    getResponse.chNFe,
-                                    tpDown,
-                                    tpAmb
-                                )
-
-                                const respostaDownloadNFe = new download.response(
-                                    download.sendRequest(download.url, downloadNFeBody)
-                                        .then(getResponse => {
-
-                                            respostaSincrona = {
-                                                statusDownload: getResponse.status,
-                                                json: getResponse.json,
-                                                pdf: getResponse.pdf,
-                                                erros: getResponse.erros
-                                            }
-
-                                            console.log(getResponse)
-
-                                            return respostaSincrona
-                                        }
-                                    )
-                                )
+                                console.log(respostaSincrona)
+                                return respostaSincrona
                             }
+                        )
+                    }
 
-                            else {
-                                console.log(getResponse)
-                                return getResponse
-                            }
+                    else {
+
+                        respostaSincrona = {
+                            statusConsulta: getResponseStatusProcessamento.status,
+                            cStat: getResponseStatusProcessamento.cStat,
+                            chNFe: getResponseStatusProcessamento.chNFe,
+                            nProt: getResponseStatusProcessamento.nProt,
+                            xml: getResponseStatusProcessamento.xml,
+                            erros: getResponseStatusProcessamento.erro
                         }
-                    )
-                );
 
-                return getResponse
-            }
-        )
+                        console.log(respostaSincrona)
+                        return respostaSincrona
+                    }
+                }
+            )
+            return respostaSincrona
+        }
     )
-    return respostaEmissao
+    return respostaSincrona
 }
 
 

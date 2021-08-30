@@ -9,11 +9,10 @@ const header = {
 }
 
 class body {
-   constructor(chNFe, tpDown, tpAmb, erro) {
-       this.chNFe = chNFe;
-       this.tpDown = tpDown;
-       this.tpAmb = tpAmb;
-       this.erros = erro;
+   constructor(chNFe, tpDown, tpAmb) {
+        this.chNFe = chNFe;
+        this.tpDown = tpDown;
+        this.tpAmb = tpAmb;
    }
 }
 
