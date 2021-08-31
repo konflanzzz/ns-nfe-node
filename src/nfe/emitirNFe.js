@@ -10,7 +10,7 @@ const header = {
 }
 
 class response {
-    constructor({ status, motivo, nsNRec, erros }) {
+    constructor(status, motivo, nsNRec, erros) {
         this.status = status;
         this.motivo = motivo;
         this.nsNRec = nsNRec;
@@ -18,15 +18,18 @@ class response {
     }
 }
 
-async function sendRequest(url, body) {
-    const dataResponseAxios = new response(
-        await axios.post(url, JSON.stringify(body), { headers: header })
-            .then(response => {
-                return response.data
-            })
-            .catch(function (error) { console.log(error) })
-    )
-    return dataResponseAxios
+async function sendRequest(body) {
+
+    let responseAPI = new response();
+
+    responseAPI = await axios.post(url, JSON.stringify(body), { headers: header })
+        .then(getResponse => {
+            responseAPI = getResponse.data
+            return responseAPI;
+        })
+        .catch(function (error) { console.log(error) })
+
+    return responseAPI
 }
 
 module.exports = { url, response, sendRequest }

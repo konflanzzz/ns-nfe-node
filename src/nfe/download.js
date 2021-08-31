@@ -9,15 +9,15 @@ const header = {
 }
 
 class body {
-   constructor(chNFe, tpDown, tpAmb) {
+    constructor(chNFe, tpDown, tpAmb) {
         this.chNFe = chNFe;
         this.tpDown = tpDown;
         this.tpAmb = tpAmb;
-   }
+    }
 }
 
 class response {
-    constructor({status, motivo, chNFe, xml, pdf, nfeProc, erros}) {
+    constructor(status, motivo, chNFe, xml, pdf, nfeProc, erros) {
         this.status = status;
         this.motivo = motivo;
         this.chNFe = chNFe;
@@ -28,15 +28,18 @@ class response {
     }
 }
 
-async function sendRequest(url, body) {
-    const dataResponseAxios = new response(
-        await axios.post(url, JSON.stringify(body), { headers: header })
-            .then(response => {
-                return response.data
-            })
-            .catch(function (error) { console.log(error) })
-    )
-    return dataResponseAxios
+async function sendRequest(body) {
+
+    let responseAPI = new response();
+
+    responseAPI = await axios.post(url, JSON.stringify(body), { headers: header })
+        .then(getResponse => {
+            responseAPI = getResponse.data
+            return responseAPI;
+        })
+        .catch(function (error) { console.log(error) })
+
+    return responseAPI
 }
-        
+
 module.exports = { url, body, response, sendRequest }

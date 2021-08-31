@@ -14,7 +14,7 @@ const header = {
 }
 
 class response {
-    constructor({ status, motivo, retConsCad, erros }) {
+    constructor(status, motivo, retConsCad, erros) {
         this.status = status;
         this.motivo = motivo;
         this.retConsCad = retConsCad;
@@ -22,11 +22,16 @@ class response {
     }
 }
 
-let respostaAPI = new response(axios.post(url, body, { headers: header })
-    .then(getResponse => {
-        respostaAPI = getResponse.data
-        return respostaAPI;
-    })
-    .catch(function (error) { console.log(error) }))
+async function sendRequest(body) {
 
-setTimeout(function () { console.log(respostaAPI)}, 1500)
+    let responseAPI = new response();
+
+    responseAPI = await axios.post(url, JSON.stringify(body), { headers: header })
+        .then(getResponse => {
+            responseAPI = getResponse.data
+            return responseAPI;
+        })
+        .catch(function (error) { console.log(error) })
+
+    return responseAPI
+}

@@ -22,84 +22,51 @@ class responseSincrono {
 
 async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
-    let respostaSincrona = new responseSincrono();
+    let respostaSincrona = new responseSincrono()
 
-    emitir.sendRequest(emitir.url, conteudo)
-        .then(getResponseEmissao => {
+    let respostaEmissao = new emitir.response()
+    respostaEmissao = await emitir.sendRequest(conteudo)
 
-            const statusProcessamentoBody = new statusProcessamento.body(
-                configParceiro.CNPJ,
-                getResponseEmissao.nsNRec,
-                tpAmb
-            )
+    let statusProcessamentoBody = new statusProcessamento.body()
 
-            respostaSincrona = {
-                statusEnvio: getResponseEmissao.status,
-                nsNRec: getResponseEmissao.nsNRec,
-                erros: getResponseEmissao.erros
-            }
+    statusProcessamentoBody = { 
+        nsNRec: respostaEmissao.nsNRec, 
+        CNPJ: configParceiro.CNPJ,
+        tpAmb: tpAmb
+    }
 
-            console.log(respostaSincrona)
+    let respostaStatusProcessamento = new statusProcessamento.response()
+    respostaStatusProcessamento = await statusProcessamento.sendRequest(statusProcessamentoBody)
 
-            statusProcessamento.sendRequest(statusProcessamento.url, statusProcessamentoBody)
-                .then(getResponseStatusProcessamento => {
-
-                    if (getResponseStatusProcessamento.cStat == 100) {
-
-                        respostaSincrona = {
-                            statusConsulta: getResponseStatusProcessamento.status,
-                            cStat: getResponseStatusProcessamento.cStat,
-                            chNFe: getResponseStatusProcessamento.chNFe,
-                            nProt: getResponseStatusProcessamento.nProt,
-                            xml: getResponseStatusProcessamento.xml,
-                            erros: getResponseStatusProcessamento.erro
-                        }
-
-                        console.log(respostaSincrona)
-
-                        const downloadNFeBody = new download.body(
-                            getResponseStatusProcessamento.chNFe,
-                            tpDown,
-                            tpAmb
-                        )
-
-                        download.sendRequest(download.url, downloadNFeBody)
-                            .then(getResponseDownload => {
-
-                                respostaSincrona = {
-                                    statusDownload: getResponseDownload.status,
-                                    json: getResponseDownload.json,
-                                    pdf: getResponseDownload.pdf,
-                                    erros: getResponseDownload.erros
-                                }
-
-                                console.log(respostaSincrona)
-                                return respostaSincrona
-                            }
-                        )
-                    }
-
-                    else {
-
-                        respostaSincrona = {
-                            statusConsulta: getResponseStatusProcessamento.status,
-                            cStat: getResponseStatusProcessamento.cStat,
-                            chNFe: getResponseStatusProcessamento.chNFe,
-                            nProt: getResponseStatusProcessamento.nProt,
-                            xml: getResponseStatusProcessamento.xml,
-                            erros: getResponseStatusProcessamento.erro
-                        }
-
-                        console.log(respostaSincrona)
-                        return respostaSincrona
-                    }
-                }
-            )
-            return respostaSincrona
-        }
+    let downloadNFeBody = new download.body(
+        respostaStatusProcessamento.chNFe,
+        tpDown,
+        tpAmb
     )
+
+    let respostaDownloadNFe = new download.response()
+    respostaDownloadNFe = await download.sendRequest(downloadNFeBody)
+
+    setTimeout(function () { console.log(respostaDownloadNFe), 5000 })
+
+    respostaSincrona = {
+        statusEnvio: respostaEmissao.status,
+        statusConsulta: respostaStatusProcessamento.status,
+        statusDownload: respostaDownloadNFe.status,
+        cStat: respostaStatusProcessamento.cStat,
+        motivo: respostaStatusProcessamento.xMotivo,
+        nsNRec: respostaEmissao.nsNRec,
+        chNFe: respostaStatusProcessamento.chNFe,
+        nProt: respostaStatusProcessamento.nProt,
+        xml: respostaDownloadNFe.xml,
+        json: respostaDownloadNFe.json,
+        pdf: respostaDownloadNFe.pdf,
+        erros: respostaStatusProcessamento.erro
+    }
+
+    setTimeout(function(){console.log(respostaSincrona), 5000})
+
     return respostaSincrona
 }
-
 
 module.exports = { responseSincrono, emitirNFeSincrono }
