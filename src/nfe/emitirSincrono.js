@@ -22,22 +22,15 @@ class responseSincrono {
 
 async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
-    let respostaSincrona = new responseSincrono()
+    let respostaEmissao = await emitir.sendRequest(conteudo)
 
-    let respostaEmissao = new emitir.response()
-    respostaEmissao = await emitir.sendRequest(conteudo)
+    let statusProcessamentoBody = new statusProcessamento.body(
+        configParceiro.CNPJ,
+        respostaEmissao.nsNRec,
+        tpAmb
+    )
 
-    let statusProcessamentoBody = new statusProcessamento.body()
-
-    statusProcessamentoBody = { 
-        nsNRec: respostaEmissao.nsNRec, 
-        CNPJ: configParceiro.CNPJ,
-        tpAmb: tpAmb
-    }
-
-    let respostaStatusProcessamento = new statusProcessamento.response()
-    respostaStatusProcessamento = await statusProcessamento.sendRequest(statusProcessamentoBody)
-    setTimeout(function () { }, 500)
+    let respostaStatusProcessamento = await statusProcessamento.sendRequest(statusProcessamentoBody)
 
     let downloadNFeBody = new download.body(
         respostaStatusProcessamento.chNFe,
@@ -45,25 +38,24 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
         tpAmb
     )
 
-    let respostaDownloadNFe = new download.response()
-    respostaDownloadNFe = await download.sendRequest(downloadNFeBody)
+    let respostaDownloadNFe = await download.sendRequest(downloadNFeBody)
 
-    setTimeout(function () { console.log(respostaDownloadNFe), 5000 })
+    let respostaSincrona = new responseSincrono(
+        respostaEmissao.status,
+        respostaStatusProcessamento.status,
+        respostaDownloadNFe.status,
+        respostaStatusProcessamento.cStat,
+        respostaStatusProcessamento.xMotivo,
+        respostaEmissao.nsNRec,
+        respostaStatusProcessamento.chNFe,
+        respostaStatusProcessamento.nProt,
+        respostaDownloadNFe.xml,
+        respostaDownloadNFe.json,
+        respostaDownloadNFe.pdf,
+        respostaStatusProcessamento.erro
+    )
 
-    respostaSincrona = {
-        statusEnvio: respostaEmissao.status,
-        statusConsulta: respostaStatusProcessamento.status,
-        statusDownload: respostaDownloadNFe.status,
-        cStat: respostaStatusProcessamento.cStat,
-        motivo: respostaStatusProcessamento.xMotivo,
-        nsNRec: respostaEmissao.nsNRec,
-        chNFe: respostaStatusProcessamento.chNFe,
-        nProt: respostaStatusProcessamento.nProt,
-        xml: respostaDownloadNFe.xml,
-        json: respostaDownloadNFe.json,
-        pdf: respostaDownloadNFe.pdf,
-        erros: respostaStatusProcessamento.erro
-    }
+    setTimeout(function () {console.log(respostaSincrona) }, 100)
 
     return respostaSincrona
 }
