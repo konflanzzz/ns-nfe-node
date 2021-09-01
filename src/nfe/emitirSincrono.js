@@ -37,6 +37,7 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
     let respostaStatusProcessamento = new statusProcessamento.response()
     respostaStatusProcessamento = await statusProcessamento.sendRequest(statusProcessamentoBody)
+    setTimeout(function () { }, 500)
 
     let downloadNFeBody = new download.body(
         respostaStatusProcessamento.chNFe,
@@ -63,8 +64,6 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
         pdf: respostaDownloadNFe.pdf,
         erros: respostaStatusProcessamento.erro
     }
-
-    setTimeout(function(){console.log(respostaSincrona), 5000})
 
     return respostaSincrona
 }
