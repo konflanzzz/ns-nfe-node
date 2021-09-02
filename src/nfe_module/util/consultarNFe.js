@@ -1,5 +1,4 @@
 const nsAPI = require('../commons/nsAPI')
-
 const url = "https://nfe.ns.eti.br/nfe/stats"
 
 class body {
@@ -19,3 +18,9 @@ class response {
         this.erros = erros
     }
 }
+
+async function consultarSituacaoNFe(body) {
+    nsAPI.PostRequest(url, body)
+}
+
+module.exports = { url, body, response, consultarSituacaoNFe }

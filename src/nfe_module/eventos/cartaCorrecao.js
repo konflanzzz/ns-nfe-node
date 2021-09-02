@@ -1,5 +1,4 @@
 const nsAPI = require('../commons/nsAPI')
-
 const url = "https://nfe.ns.eti.br/nfe/cce"
 
 class body {
@@ -20,3 +19,9 @@ class response {
         this.erros = erros
     }
 }
+
+async function corrigirNFe(body) {
+    nsAPI.PostRequest(url, body)
+}
+
+module.exports = { url, body, response, corrigirNFe }

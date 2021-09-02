@@ -1,5 +1,4 @@
 const url = "https://nfe.ns.eti.br/nfe/get"
-const nsAPI = require('../commons/nsAPI')
 
 class body {
     constructor(chNFe, tpDown, tpAmb) {

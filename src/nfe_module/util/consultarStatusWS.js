@@ -19,3 +19,9 @@ class response {
         this.erros = erros
     }
 }
+
+async function consultarStatusWS(body) {
+    nsAPI.PostRequest(url, body)
+}
+
+module.exports = { url, body, response, consultarStatusWS }

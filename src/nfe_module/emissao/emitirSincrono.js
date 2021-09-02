@@ -3,7 +3,6 @@ const download = require('./download')
 const emitir = require('./emitir')
 const configParceiro = require('../../configParceiro')
 const nsAPI = require('../commons/nsAPI')
-const NFeJSON = require("./LayoutNFe.json")
 
 class responseSincrono {
     constructor(statusEnvio, statusConsulta, statusDownload, cStat, motivo, xMotivo, nsNRec, chNFe, nProt, xml, json, pdf, erros) {

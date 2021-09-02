@@ -18,3 +18,9 @@ class response {
         this.erros = erros
     }
 }
+
+async function consultarCadastro(body) {
+    nsAPI.PostRequest(url, body)
+}
+
+module.exports = { url, body, response, consultarCadastro }
