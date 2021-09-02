@@ -2,7 +2,6 @@ const statusProcessamento = require('./statusProcessamento')
 const download = require('./download')
 const emitir = require('./emitir')
 const configParceiro = require('../../configParceiro')
-const nsAPI = require('../commons/nsAPI')
 
 class responseSincrono {
     constructor(statusEnvio, statusConsulta, statusDownload, cStat, motivo, xMotivo, nsNRec, chNFe, nProt, xml, json, pdf, erros) {
@@ -22,13 +21,11 @@ class responseSincrono {
     }
 }
 
-async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
+async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
 
     let respostaSincrona = new responseSincrono();
 
-    let emissaoResponse = new emitir.response(
-        await nsAPI.PostRequest(emitir.url,conteudo)
-    )
+    let emissaoResponse = await emitir.sendPostRequest(conteudo)
 
     if ((emissaoResponse.status == 200) || (emissaoResponse.status == -6 || (emissaoResponse.status == -7))){
         
@@ -40,9 +37,7 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
             tpAmb
         )
 
-        let statusResponse = new statusProcessamento.response(
-            await nsAPI.PostRequest(statusProcessamento.url, statusBody)
-        )
+        let statusResponse = await statusProcessamento.sendPostRequest(statusBody)
 
         respostaSincrona.statusConsulta = statusResponse.status
 
@@ -67,9 +62,7 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
                     tpAmb
                 )
 
-                let downloadResponse = new download.response(
-                    await nsAPI.PostRequest(download.url, downloadBody)
-                )
+                let downloadResponse = await download.sendPostRequest(downloadBody, caminhoSalvar)
 
             }
 

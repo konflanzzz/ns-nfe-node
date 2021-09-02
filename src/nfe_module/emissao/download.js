@@ -1,3 +1,8 @@
+const nsAPI = require('../commons/nsAPI')
+var fs = require('fs');
+const generateFile = require("../commons/downloadFiles")
+'use strict';
+
 const url = "https://nfe.ns.eti.br/nfe/get"
 
 class body {
@@ -20,4 +25,29 @@ class response {
     }
 }
 
-module.exports = { url, body, response }
+async function sendPostRequest(body, caminho) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, body))
+
+    if (responseAPI.json != null){
+        generateFile.salvarArquivo(caminho, responseAPI.chNFe,"-nfeProc.json",responseAPI.json)
+    }
+
+    if (responseAPI.pdf != null) {
+        let data = responseAPI.pdf;
+        let buff = Buffer.from(data, 'base64');
+        generateFile.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.pdf", buff)
+    }
+
+    if (responseAPI.xml != null) {
+        generateFile.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.xml", responseAPI.xml)
+    }
+
+    return responseAPI
+}
+
+// let corpo = new body("43210907364617000135550000000223031183560074","XP","2")
+
+// sendPostRequest(corpo, "../../NFe/")
+
+module.exports = { url, body, response, sendPostRequest }
+

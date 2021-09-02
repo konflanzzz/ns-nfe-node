@@ -1,3 +1,4 @@
+const nsAPI = require('../commons/nsAPI')
 const url = "https://nfe.ns.eti.br/nfe/issue"
 
 class response {
@@ -9,4 +10,9 @@ class response {
     }
 }
 
-module.exports = { url, response }
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
+}
+
+module.exports = { url, response, sendPostRequest }
