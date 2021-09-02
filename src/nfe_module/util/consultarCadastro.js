@@ -1,11 +1,13 @@
-const nsAPI = require('./nsAPI')
+const nsAPI = require('../commons/nsAPI')
 
 const url = "https://nfe.ns.eti.br/util/conscad"
 
-const body = {
-    "CNPJCont": "07364617000135",
-    "UF": "RS",
-    "CNPJ": "07364617000135"
+class body {
+    constructor(CNPJCont, UF, CNPJ) {
+        this.CNPJCont = CNPJCont;
+        this.UF = UF;
+        this.CNPJ = CNPJ;
+    }
 }
 
 class response {

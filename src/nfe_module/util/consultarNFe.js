@@ -1,0 +1,21 @@
+const nsAPI = require('../commons/nsAPI')
+
+const url = "https://nfe.ns.eti.br/nfe/stats"
+
+class body {
+    constructor(licencaCnpj, chNFe, tpAmb, versao) {
+        this.licencaCnpj = licencaCnpj;
+        this.chNFe = chNFe;
+        this.tpAmb = tpAmb;
+        this.versao = versao;
+    }
+}
+
+class response {
+    constructor({status, motivo, retConsSitNFe, erros}) {
+        this.status = status;
+        this.motivo = motivo;
+        this.retConsSitNFe = retConsSitNFe;
+        this.erros = erros
+    }
+}

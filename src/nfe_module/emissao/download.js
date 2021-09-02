@@ -1,4 +1,5 @@
 const url = "https://nfe.ns.eti.br/nfe/get"
+const nsAPI = require('../commons/nsAPI')
 
 class body {
     constructor(chNFe, tpDown, tpAmb) {
@@ -15,7 +16,7 @@ class response {
         this.chNFe = chNFe;
         this.xml = xml;
         this.pdf = pdf;
-        this.json = JSON.stringify(nfeProc);
+        this.json = nfeProc;
         this.erros = erros
     }
 }
