@@ -16,9 +16,3 @@ class response {
         this.erros = erros
     }
 }
-
-let retorno = new response();
-retorno = nsAPI.PostRequest(url,body)
-setTimeout(() => {
-    console.log(retorno)
-}, 1000);
