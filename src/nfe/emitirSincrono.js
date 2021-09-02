@@ -1,10 +1,12 @@
 const statusProcessamento = require('./statusProcessamento')
 const download = require('./download')
-const emitir = require('./emitirNFe')
+const emitir = require('./emitir')
 const configParceiro = require('../configParceiro')
+const nsAPI = require('./nsAPI')
+const NFeJSON = require("./LayoutNFe.json")
 
 class responseSincrono {
-    constructor(statusEnvio, statusConsulta, statusDownload, cStat, motivo, nsNRec, chNFe, nProt, xml, json, pdf, erros) {
+    constructor({statusEnvio, statusConsulta, statusDownload, cStat, motivo, nsNRec, chNFe, nProt, xml, json, pdf, erros}) {
         this.statusEnvio = statusEnvio;
         this.statusConsulta = statusConsulta;
         this.statusDownload = statusDownload;
@@ -22,42 +24,39 @@ class responseSincrono {
 
 async function emitirNFeSincrono(conteudo, tpAmb, tpDown) {
 
-    let respostaEmissao = await emitir.sendRequest(conteudo)
-
-    let statusProcessamentoBody = new statusProcessamento.body(
+    let emissaoResponse = new emitir.response(
+        await nsAPI.PostRequest(emitir.url,conteudo)
+    )
+    
+    let statusBody = new statusProcessamento.body(
         configParceiro.CNPJ,
-        respostaEmissao.nsNRec,
+        emissaoResponse.nsNRec,
         tpAmb
     )
 
-    let respostaStatusProcessamento = await statusProcessamento.sendRequest(statusProcessamentoBody)
-
-    let downloadNFeBody = new download.body(
-        respostaStatusProcessamento.chNFe,
+    let statusResponse = new statusProcessamento.response(
+        await nsAPI.PostRequest(statusProcessamento.url,statusBody)
+    )
+    
+    let downloadBody = new download.body(
+        statusResponse.chNFe,
         tpDown,
         tpAmb
     )
 
-    let respostaDownloadNFe = await download.sendRequest(downloadNFeBody)
-
-    let respostaSincrona = new responseSincrono(
-        respostaEmissao.status,
-        respostaStatusProcessamento.status,
-        respostaDownloadNFe.status,
-        respostaStatusProcessamento.cStat,
-        respostaStatusProcessamento.xMotivo,
-        respostaEmissao.nsNRec,
-        respostaStatusProcessamento.chNFe,
-        respostaStatusProcessamento.nProt,
-        respostaDownloadNFe.xml,
-        respostaDownloadNFe.json,
-        respostaDownloadNFe.pdf,
-        respostaStatusProcessamento.erro
+    let downloadResponse = new download.response(
+        await nsAPI.PostRequest(download.url,downloadBody)
     )
 
-    setTimeout(function () {console.log(respostaSincrona) }, 100)
+    const respostaSincrona = {
+        emissaoResponse,
+        statusResponse,
+        downloadResponse
+    }
 
     return respostaSincrona
 }
+
+emitirNFeSincrono(NFeJSON,"2","X")
 
 module.exports = { responseSincrono, emitirNFeSincrono }
