@@ -6,14 +6,17 @@ async function salvarArquivo(caminho, nomeArquivo, extensao, conteudo){
     var caminhoSalvar = path.join(caminho, nomeArquivo + extensao) 
 
     try {
+
         if (!fs.existsSync(caminho)) {
+
             fs.mkdirSync(caminho);
-        } 
-        else {
+
         }
-    } 
+    }
     catch (err) {
+
         console.log(err);
+
     }
 
     fs.writeFile(caminhoSalvar, conteudo, function (err) {

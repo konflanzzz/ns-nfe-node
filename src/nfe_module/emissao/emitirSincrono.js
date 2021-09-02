@@ -43,18 +43,15 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
 
         if ((statusResponse.status == 200)){
             
-            respostaSincrona = {
-                cStat: statusResponse.cStat,
-                xMotivo: statusResponse.xMotivo,
-                motivo: statusResponse.motivo
-            }
+            respostaSincrona.cStat = statusResponse.cStat
+            respostaSincrona.xMotivo = statusResponse.xMotivo
+            respostaSincrona.motivo = statusResponse.motivo
+            respostaSincrona.nsNRec = emissaoResponse.nsNRec
 
             if ((statusResponse.cStat == 100) || (statusResponse.cStat == 150)){
-                
-                respostaSincrona = {
-                    chNFe: statusResponse.chNFe,
-                    nProt: statusResponse.nProt
-                }
+            
+                respostaSincrona.chNFe = statusResponse.chNFe
+                respostaSincrona.nProt = statusResponse.nProt
 
                 let downloadBody = new download.body(
                     statusResponse.chNFe,
@@ -64,19 +61,63 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
 
                 let downloadResponse = await download.sendPostRequest(downloadBody, caminhoSalvar)
 
+                if (downloadResponse.status == 200) {
+                    respostaSincrona.statusDownload = downloadResponse.status
+                    respostaSincrona.xml = "xml aqui para fins de teste" //downloadResponse.xml
+                    respostaSincrona.json = "json aqui para fins de teste" //downloadResponse.json
+                    respostaSincrona.pdf = "pdf aqui para fins de teste" //downloadResponse.pdf
+                }
+                
+                else {
+                    respostaSincrona.motivo = downloadResponse.motivo;
+                }
+
             }
 
             else {
-                
+                respostaSincrona.motivo = statusResponse.motivo;
+                respostaSincrona.xMotivo = statusResponse.xMotivo;
             }
         }
 
+        else if (statusResponse.status == -2){
+
+            respostaSincrona.cStat = statusResponse.cStat;
+
+            respostaSincrona.erros = statusResponse.erro;
+        }
+
         else {
-            
+            motivo = statusProcessamento.motivo; 
         }
     }
 
-    else { console.log(respostaSincrona)}
+    else if ((statusEnvio == -4) || (statusEnvio ==-2)) {
+
+        respostaSincrona.motivo = emissaoResponse.motivo
+
+        try { 
+            respostaSincrona.erros = emissaoResponse.erros 
+        }
+        catch { 
+
+        }
+    }
+
+    else if ((statusEnvio == -999) || (statusEnvio == -5)) {
+        respostaSincrona.motivo = emissaoResponse.motivo
+    }
+    
+    else {
+
+        try { 
+            respostaSincrona.motivo = emissaoResponse.motivo 
+        }
+
+        catch { 
+            respostaSincrona.motivo = JSON.stringify(emissaoResponse) 
+        }
+    }
 
     return respostaSincrona
 }
