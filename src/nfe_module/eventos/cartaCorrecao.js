@@ -15,13 +15,29 @@ class response {
     constructor({ status, motivo, retEvento, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retEvento = JSON.stringify(retEvento);
+        this.retEvento = retEvento;
         this.erros = erros
     }
 }
 
-async function corrigirNFe(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
+
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+
+    let downloadEventoBody = new downloadEvento.body(
+        responseAPI.retEvento.chNFe,
+        conteudo.tpAmb,
+        tpDown,
+        "CCe",
+        conteudo.nSeqEvento
+    )
+
+    let downloadEventoResponse = await downloadEvento.sendPostRequest(downloadEventoBody, caminhoSalvar)
+
+    var retorno = [responseAPI, downloadEventoResponse]
+
+    return retorno
 }
+
 
 module.exports = { url, body, response, corrigirNFe }

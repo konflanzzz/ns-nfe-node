@@ -26,6 +26,7 @@ class response {
 }
 
 async function sendPostRequest(body, caminho) {
+    
     let responseAPI = new response(await nsAPI.PostRequest(url, body))
 
     if (responseAPI.json != null){
@@ -44,10 +45,6 @@ async function sendPostRequest(body, caminho) {
 
     return responseAPI
 }
-
-// let corpo = new body("43210907364617000135550000000223031183560074","XP","2")
-
-// sendPostRequest(corpo, "../../NFe/")
 
 module.exports = { url, body, response, sendPostRequest }
 

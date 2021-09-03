@@ -20,13 +20,14 @@ class response {
     constructor({ status, motivo, retornoInutNFe, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retornoInutNFe = JSON.stringify(retornoInutNFe);
+        this.retornoInutNFe = retornoInutNFe;
         this.erros = erros
     }
 }
 
-async function inutilizarNFe(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo, caminhoSalvar) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
 module.exports = { url, body, response, inutilizarNFe }
