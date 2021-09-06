@@ -1,4 +1,7 @@
 const nsAPI = require('../commons/nsAPI')
+const downloadEvento = require('./downloadEvento')
+const util = require('../commons/util')
+
 const url = "https://nfe.ns.eti.br/nfe/cce"
 
 class body {
@@ -34,10 +37,18 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
 
     let downloadEventoResponse = await downloadEvento.sendPostRequest(downloadEventoBody, caminhoSalvar)
 
-    var retorno = [responseAPI, downloadEventoResponse]
-
-    return retorno
+    return downloadEventoResponse
 }
 
+// let corpo = new body(
+//     "43210907364617000135550000000223861693448643",
+//     "2",
+//     util.dhEmiGet(),
+//     "3",
+//     "CARTA DE CORRECAO ADICIONADA PARA TESTES DE INTEGRACAO COM EXEMPLO NODE JS"
+// )
 
-module.exports = { url, body, response, corrigirNFe }
+// sendPostRequest(corpo, "XP", "../../../NFe/Eventos").then(getResponse => { console.log(getResponse)})
+
+
+module.exports = { url, body, response, sendPostRequest }

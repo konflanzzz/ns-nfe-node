@@ -63,15 +63,14 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
 
                 if (downloadResponse.status == 200) {
                     respostaSincrona.statusDownload = downloadResponse.status
-                    respostaSincrona.xml = "xml aqui para fins de teste" //downloadResponse.xml
-                    respostaSincrona.json = "json aqui para fins de teste" //downloadResponse.json
-                    respostaSincrona.pdf = "pdf aqui para fins de teste" //downloadResponse.pdf
+                    respostaSincrona.xml = downloadResponse.xml
+                    respostaSincrona.json = downloadResponse.json
+                    respostaSincrona.pdf = downloadResponse.pdf
                 }
                 
                 else {
                     respostaSincrona.motivo = downloadResponse.motivo;
                 }
-
             }
 
             else {
@@ -81,9 +80,7 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
         }
 
         else if (statusResponse.status == -2){
-
             respostaSincrona.cStat = statusResponse.cStat;
-
             respostaSincrona.erros = statusResponse.erro;
         }
 
@@ -99,8 +96,9 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
         try { 
             respostaSincrona.erros = emissaoResponse.erros 
         }
-        catch { 
 
+        catch (error){ 
+            console.log(error);
         }
     }
 

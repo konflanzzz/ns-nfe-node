@@ -21,7 +21,7 @@ class response {
         this.erros = erros;
         this.xml = xml;
         this.pdf = pdf;
-        this.json = json
+        this.json = JSON.stringify(json)
     }
 }
 
