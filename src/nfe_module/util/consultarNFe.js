@@ -27,7 +27,6 @@ async function sendPostRequest(conteudo) {
 }
 
 // let corpo = new body(configParceiro.CNPJ,"43210807364617000135550000000228481157634045","2","4.00")
-
 // sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
 
 module.exports = { url, body, response, sendPostRequest }

@@ -1,20 +1,12 @@
 const nsAPI = require('../commons/nsAPI')
+const conteudoJSON = require('../../../LayoutNFe.json')
 const url = "https://nfe.ns.eti.br/util/generatexml"
 
-class body {
-    constructor(CNPJCont, UF, tpAmb, versao) {
-        this.CNPJCont = CNPJCont;
-        this.UF = UF;
-        this.tpAmb = tpAmb;
-        this.versao = versao;
-    }
-}
-
 class response {
-    constructor({ status, motivo, retStatusServico, erros }) {
+    constructor({ status, motivo, xml, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retStatusServico = JSON.parse(retStatusServico);
+        this.xml = xml;
         this.erros = erros
     }
 }
@@ -24,4 +16,6 @@ async function sendPostRequest(conteudo) {
     return responseAPI
 }
 
-module.exports = { url, body, response, gerarXML }
+//sendPostRequest(conteudoJSON).then(getResponse => {console.log(getResponse)})
+
+module.exports = { url, response, sendPostRequest }

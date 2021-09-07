@@ -1,26 +1,23 @@
 const nsAPI = require('../commons/nsAPI')
+const conteudoJSON = require('../../../LayoutNFe.json')
+
 const url = "https://nfe.ns.eti.br/util/preview/nfe"
 
-class body {
-    constructor(CNPJCont, UF, tpAmb, versao) {
-        this.CNPJCont = CNPJCont;
-        this.UF = UF;
-        this.tpAmb = tpAmb;
-        this.versao = versao;
-    }
-}
-
 class response {
-    constructor({ status, motivo, retStatusServico, erros }) {
+    constructor({ status, motivo, pdf, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retStatusServico = JSON.parse(retStatusServico);
+        this.pdf = pdf;
         this.erros = erros
     }
 }
 
-async function previaNFe(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
-module.exports = { url, body, response, previaNFe }
+// sendPostRequest(conteudoJSON).then(getResponse => {console.log(getResponse)})
+
+module.exports = { url, response, sendPostRequest }
+

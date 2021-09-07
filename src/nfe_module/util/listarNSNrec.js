@@ -2,25 +2,28 @@ const nsAPI = require('../commons/nsAPI')
 const url = "https://nfe.ns.eti.br/util/list/nsnrecs"
 
 class body {
-    constructor(CNPJCont, UF, tpAmb, versao) {
-        this.CNPJCont = CNPJCont;
-        this.UF = UF;
-        this.tpAmb = tpAmb;
-        this.versao = versao;
+    constructor(chNFe) {
+        this.chNFe = chNFe;
     }
 }
 
 class response {
-    constructor({ status, motivo, retStatusServico, erros }) {
+    constructor({ status, motivo, nsNRecs, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retStatusServico = JSON.parse(retStatusServico);
+        this.nsNRecs = nsNRecs;
         this.erros = erros
     }
 }
 
-async function listarNSNrec(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
-module.exports = { url, body, response, listarNSNrec }
+// let corpo = new body("43210807364617000135550000000228481157634045")
+
+// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
+
+
+module.exports = { url, body, response, sendPostRequest }

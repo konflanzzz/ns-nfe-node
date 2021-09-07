@@ -26,7 +26,6 @@ async function sendPostRequest(conteudo) {
 }
 
 // let corpo = new body(configParceiro.CNPJ,"RS","07364617000135")
-
 // sendPostRequest(corpo).then(getResponse =>{console.log(getResponse)})
 
 module.exports = { url, body, response, sendPostRequest }
