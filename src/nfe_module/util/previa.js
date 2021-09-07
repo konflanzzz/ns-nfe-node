@@ -1,5 +1,4 @@
 const nsAPI = require('../commons/nsAPI')
-const conteudoJSON = require('../../../LayoutNFe.json')
 
 const url = "https://nfe.ns.eti.br/util/preview/nfe"
 
@@ -16,8 +15,6 @@ async function sendPostRequest(conteudo) {
     let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
     return responseAPI
 }
-
-// sendPostRequest(conteudoJSON).then(getResponse => {console.log(getResponse)})
 
 module.exports = { url, response, sendPostRequest }
 

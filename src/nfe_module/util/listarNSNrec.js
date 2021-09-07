@@ -21,9 +21,4 @@ async function sendPostRequest(conteudo) {
     return responseAPI
 }
 
-// let corpo = new body("43210807364617000135550000000228481157634045")
-
-// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
-
-
 module.exports = { url, body, response, sendPostRequest }

@@ -1,5 +1,4 @@
 const nsAPI = require('../commons/nsAPI')
-const configParceiro = require('../../configParceiro')
 
 const url = "https://nfe.ns.eti.br/util/wssefazstatus"
 
@@ -25,9 +24,5 @@ async function sendPostRequest(conteudo) {
     let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
     return responseAPI
 }
-
-// let corpo = new body(configParceiro.CNPJ,"43","2","4.00")
-
-// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
 
 module.exports = { url, body, response, sendPostRequest }

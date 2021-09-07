@@ -1,6 +1,5 @@
 const nsAPI = require('../commons/nsAPI')
 const downloadEvento = require('./downloadEvento')
-const util = require('../commons/util')
 
 const url = "https://nfe.ns.eti.br/nfe/cancel"
 
@@ -41,15 +40,5 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
 
     return downloadEventoResponse
 }
-
-// let corpo = new body(
-//     '43210907364617000135550000000223891165317958',
-//     "2", 
-//     util.dhEmiGet(),
-//     '143210000697636',
-//     "CANCELAMENTO REALIZADO PARA TESTES DE INTEGRACAO EXEMPLO NODE JS"
-// )
-
-// sendPostRequest(corpo, "XP", "../../../NFe/Eventos").then(getResponse => { console.log(getResponse)})
 
 module.exports = { url, body, response, sendPostRequest }

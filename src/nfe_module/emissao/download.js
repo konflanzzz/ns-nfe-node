@@ -1,6 +1,6 @@
 const nsAPI = require('../commons/nsAPI')
 var fs = require('fs');
-const generateFile = require("../commons/downloadFiles")
+const util = require("../commons/util")
 'use strict';
 
 const url = "https://nfe.ns.eti.br/nfe/get"
@@ -30,17 +30,17 @@ async function sendPostRequest(body, caminho) {
     let responseAPI = new response(await nsAPI.PostRequest(url, body))
 
     if (responseAPI.json != null){
-        generateFile.salvarArquivo(caminho, responseAPI.chNFe,"-nfeProc.json",responseAPI.json)
+        util.salvarArquivo(caminho, responseAPI.chNFe,"-nfeProc.json",responseAPI.json)
     }
 
     if (responseAPI.pdf != null) {
         let data = responseAPI.pdf;
         let buff = Buffer.from(data, 'base64');
-        generateFile.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.pdf", buff)
+        util.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.pdf", buff)
     }
 
     if (responseAPI.xml != null) {
-        generateFile.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.xml", responseAPI.xml)
+        util.salvarArquivo(caminho, responseAPI.chNFe, "-nfeProc.xml", responseAPI.xml)
     }
 
     return responseAPI

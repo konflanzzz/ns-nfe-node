@@ -22,9 +22,4 @@ async function sendPostRequest(conteudo) {
     return responseAPI
 }
 
-// let corpo = new body("xml_aqui",false)
-
-// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
-
-
 module.exports = { url, body, response, sendPostRequest }

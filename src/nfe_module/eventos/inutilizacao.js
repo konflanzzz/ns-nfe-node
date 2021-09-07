@@ -1,6 +1,5 @@
 const nsAPI = require('../commons/nsAPI')
 const downloadInut = require("./downloadInutilizacao")
-const configParceiro = require('../../configParceiro')
 
 const url = "https://nfe.ns.eti.br/nfe/inut"
 
@@ -14,7 +13,6 @@ class body {
         this.nNFIni = nNFIni;
         this.nNFFin = nNFFin;
         this.xJust = xJust;
-
     }
 }
 
@@ -37,9 +35,5 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
 
     return downloadInutResponse
 }
-
-// let corpo = new body("43", "2", "21", configParceiro.CNPJ, "0", "22390", "22390","INUTILIZACA REALIZADA PARA TESTE DE INTEGRACAO COM EXEMPLO NODE JS")
-
-// sendPostRequest(corpo, "XP", "../../../NFe/Eventos").then(getResponse => { console.log(getResponse) })
 
 module.exports = { url, body, response, sendPostRequest }
