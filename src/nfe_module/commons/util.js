@@ -9,10 +9,45 @@ function dhEmiGet(){
     return dhEmi
 }
 
-// function gravarLinhaLog(registro){
-//     var caminhoLog = "../../../NFe/logs"
-    
-// }
+function gravarLinhaLog(registro){
+
+    let logTime = new Date()
+    logTime = logTime.toLocaleTimeString() + ":" + logTime.getMilliseconds()
+
+    var caminhoLog = "./NFe/logs"
+
+    var fileName = new Date().toISOString().slice(0, 10).replace("-","").replace("-","")
+
+    try {
+
+        if (!fs.existsSync(caminhoLog)) {
+            try {
+                salvarArquivo(caminhoLog, fileName, ".txt", logTime + " " + registro + "\r\n")
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+        else {
+
+            fs.appendFile(path.join(caminhoLog, fileName + ".txt"), logTime + " " + registro + "\r\n", function (err) {
+                
+                if (err) {
+                    // append failed
+                } 
+                
+                else {
+                    // done
+                }
+            })
+        }
+    }
+
+    catch (err) {
+        console.log(err);
+    }
+}
 
 async function salvarArquivo(caminho, nomeArquivo, extensao, conteudo) {
 
@@ -34,4 +69,4 @@ async function salvarArquivo(caminho, nomeArquivo, extensao, conteudo) {
 
 }
 
-module.exports = { salvarArquivo, dhEmiGet }
+module.exports = { salvarArquivo, dhEmiGet, gravarLinhaLog }
