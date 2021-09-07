@@ -1,4 +1,5 @@
 const nsAPI = require('../commons/nsAPI')
+const configParceiro = require('../../configParceiro')
 
 const url = "https://nfe.ns.eti.br/util/wssefazstatus"
 
@@ -15,13 +16,18 @@ class response {
     constructor({ status, motivo, retStatusServico, erros }) {
         this.status = status;
         this.motivo = motivo;
-        this.retStatusServico = JSON.parse(retStatusServico);
+        this.retStatusServico = retStatusServico;
         this.erros = erros
     }
 }
 
-async function consultarStatusWS(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
-module.exports = { url, body, response, consultarStatusWS }
+// let corpo = new body(configParceiro.CNPJ,"43","2","4.00")
+
+// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
+
+module.exports = { url, body, response, sendPostRequest }

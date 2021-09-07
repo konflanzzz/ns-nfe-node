@@ -19,8 +19,9 @@ class response {
     }
 }
 
-async function gerarXML(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
 module.exports = { url, body, response, gerarXML }

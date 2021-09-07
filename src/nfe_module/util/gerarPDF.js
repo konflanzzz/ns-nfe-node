@@ -2,25 +2,29 @@ const nsAPI = require('../commons/nsAPI')
 const url = "https://nfe.ns.eti.br/util/generatepdf"
 
 class body {
-    constructor(CNPJCont, UF, tpAmb, versao) {
-        this.CNPJCont = CNPJCont;
-        this.UF = UF;
-        this.tpAmb = tpAmb;
-        this.versao = versao;
+    constructor(xml, printCEAN, obsCanhoto) {
+        this.xml = xml;
+        this.printCEAN = printCEAN;
+        this.obsCanhoto = obsCanhoto;
     }
 }
 
 class response {
-    constructor({ status, motivo, retStatusServico, erros }) {
+    constructor({ status, motivo, pdf }) {
         this.status = status;
         this.motivo = motivo;
-        this.retStatusServico = JSON.parse(retStatusServico);
-        this.erros = erros
+        this.pdf = pdf;
     }
 }
 
-async function gerarPDF(body) {
-    nsAPI.PostRequest(url, body)
+async function sendPostRequest(conteudo) {
+    let responseAPI = new response(await nsAPI.PostRequest(url, conteudo))
+    return responseAPI
 }
 
-module.exports = { url, body, response, gerarPDF }
+// let corpo = new body("xml_aqui",false)
+
+// sendPostRequest(corpo).then(getResponse => {console.log(getResponse)})
+
+
+module.exports = { url, body, response, sendPostRequest }
