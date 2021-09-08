@@ -3,8 +3,6 @@ const downloadEvento = require('./downloadEvento')
 
 const url = "https://nfe.ns.eti.br/nfe/cancel"
 
-
-
 class body {
     constructor(chNFe, tpAmb, dhEvento, nProt, xJust) {
         this.chNFe = chNFe;

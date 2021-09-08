@@ -112,8 +112,9 @@ async function emitirNFeSincrono(conteudo, tpAmb, tpDown, caminhoSalvar) {
             respostaSincrona.motivo = emissaoResponse.motivo 
         }
 
-        catch { 
-            respostaSincrona.motivo = JSON.stringify(emissaoResponse) 
+        catch (error) {
+
+            respostaSincrona.motivo = JSON.stringify("ERRO: " + error + "\r\n" + emissaoResponse) 
         }
     }
 
