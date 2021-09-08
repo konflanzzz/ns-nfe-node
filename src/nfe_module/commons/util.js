@@ -14,7 +14,7 @@ function gravarLinhaLog(registro){
     let logTime = new Date()
     logTime = logTime.toLocaleTimeString() + ":" + logTime.getMilliseconds()
 
-    var caminhoLog = "./NFe/logs"
+    var caminhoLog = "../../../NFe/logs"
 
     var fileName = new Date().toISOString().slice(0, 10).replace("-","").replace("-","")
 
