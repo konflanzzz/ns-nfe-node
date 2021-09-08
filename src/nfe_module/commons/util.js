@@ -22,7 +22,7 @@ function gravarLinhaLog(registro){
 
         if (!fs.existsSync(caminhoLog)) {
             try {
-                salvarArquivo(caminhoLog, fileName, ".txt", logTime + " " + registro + "\r\n")
+                salvarArquivo(caminhoLog, fileName, ".log", logTime + " " + registro + "\r\n")
             }
             catch (error) {
                 console.log(error)
@@ -31,7 +31,7 @@ function gravarLinhaLog(registro){
 
         else {
 
-            fs.appendFile(path.join(caminhoLog, fileName + ".txt"), logTime + " " + registro + "\r\n", function (err) {
+            fs.appendFile(path.join(caminhoLog, fileName + ".log"), logTime + " " + registro + "\r\n", function (err) {
                 
                 if (err) {
                     // append failed
