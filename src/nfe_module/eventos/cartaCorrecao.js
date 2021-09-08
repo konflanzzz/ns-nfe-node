@@ -39,4 +39,4 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
     return downloadEventoResponse
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

@@ -36,4 +36,4 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
     return downloadInutResponse
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

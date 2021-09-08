@@ -15,4 +15,4 @@ async function sendPostRequest(conteudo) {
     return responseAPI
 }
 
-module.exports = { url, response, sendPostRequest }
+module.exports = { sendPostRequest }

@@ -24,4 +24,4 @@ async function sendPostRequest(conteudo) {
     return responseAPI
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

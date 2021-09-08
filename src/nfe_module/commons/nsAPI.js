@@ -13,6 +13,7 @@ async function PostRequest(url, body) {
     util.gravarLinhaLog('[DADOS_ENVIO]: ' + JSON.stringify(body))
 
     responseAPI = await axios.post(url, JSON.stringify(body), { headers: header })
+    
         .then(getResponse => {
 
             util.gravarLinhaLog('[DADOS_RESPOSTA]: ' + JSON.stringify(getResponse.data))
@@ -21,7 +22,14 @@ async function PostRequest(url, body) {
 
             return responseAPI;
         })
-        .catch(function (error) { console.log(error) })
+
+        .catch(getResponse => {
+            util.gravarLinhaLog('[DADOS_RESPOSTA]: ' + JSON.stringify(getResponse.response.data))
+
+            responseAPI = getResponse.response.data
+
+            return responseAPI;
+        })
 
     return responseAPI
 }

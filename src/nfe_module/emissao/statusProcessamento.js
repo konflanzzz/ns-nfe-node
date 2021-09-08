@@ -28,4 +28,4 @@ async function sendPostRequest(body) {
     return responseAPI
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

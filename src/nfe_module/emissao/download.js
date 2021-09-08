@@ -20,7 +20,7 @@ class response {
         this.chNFe = chNFe;
         this.xml = xml;
         this.pdf = pdf;
-        this.json = nfeProc;
+        this.json = JSON.stringify(nfeProc);
         this.erros = erros
     }
 }
@@ -46,5 +46,5 @@ async function sendPostRequest(body, caminho) {
     return responseAPI
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }
 

@@ -59,4 +59,4 @@ async function sendPostRequest(conteudo, caminhoSalvar) {
     return responseAPI
 }
 
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

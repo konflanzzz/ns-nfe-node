@@ -15,11 +15,11 @@ class body {
 }
 
 class response {
-    constructor({status, motivo, retEvento, erros}) {
+    constructor({status, motivo, retEvento, erro}) {
         this.status = status;
         this.motivo = motivo;
         this.retEvento = retEvento;
-        this.erros = erros
+        this.erro = erro
     }
 }
 
@@ -44,21 +44,8 @@ async function sendPostRequest(conteudo, tpDown, caminhoSalvar) {
             return downloadEventoResponse
         }
     }
-    else {
 
-        console.log("OCCOREU UM ERRO AO REALIZAR O CANCELAMENTO")
-        
-    }
+    return responseAPI
 }
 
-let corpo = new body(
-    '43210907364617000135550000000223961138859669',
-    "2",
-    util.dhEmiGet(),
-    '143210000729497',
-    "CANCELAMENTO REALIZADO PARA TESTES DE INTEGRACAO EXEMPLO NODE JS"
-)
-
-sendPostRequest(corpo, "XP", "../../../NFe/Eventos").then(getResponse => { console.log(getResponse) })
-
-module.exports = { url, body, response, sendPostRequest }
+module.exports = { body, sendPostRequest }

@@ -1,12 +1,12 @@
 {
-  "name": "testesnodejs",
+  "name": "ns-api-client-nfe",
   "version": "1.0.0",
   "description": "testes",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Fernando Konflanz - NSTecnologia",
+  "author": "Fernando Konflanz @ NSTecnologia",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
