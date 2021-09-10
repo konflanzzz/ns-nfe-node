@@ -3,10 +3,12 @@ const nsAPI = require('../commons/nsAPI')
 const url = "https://nfe.ns.eti.br/util/conscad"
 
 class body {
-    constructor(CNPJCont, UF, CNPJ) {
+    constructor(CNPJCont, UF, IE, CNPJ, CPF) {
         this.CNPJCont = CNPJCont;
         this.UF = UF;
+        this.IE = IE;
         this.CNPJ = CNPJ;
+        this.CPF = CPF;
     }
 }
 
