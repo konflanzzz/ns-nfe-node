@@ -1,6 +1,5 @@
 const nsAPI = require('../commons/nsAPI')
 const downloadEvento = require('./downloadEvento')
-const util = require('../commons/util')
 
 const url = "https://nfe.ns.eti.br/nfe/cancel"
 
