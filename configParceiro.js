@@ -1,4 +1,4 @@
-const token = "ADQWREQW561D32AWS1D6"
-const CNPJ = "07364617000135"
+const token = ""
+const CNPJ = ""
 
 module.exports = {token, CNPJ}
