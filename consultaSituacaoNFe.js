@@ -1,1 +1,0 @@
-// Exemplo de consulta de situacao
